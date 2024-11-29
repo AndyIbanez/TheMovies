@@ -29,6 +29,11 @@ class NetworkExecutor {
                     .dataTaskPublisher(for: httpTask)
                     .tryMap {
                         let object = try request.parseResponse(data: $0)
+                        if let baseObject = object as? OMDBBaseResultProtocol {
+                            if !baseObject.success, let error = baseObject.error {
+                                throw OMDBAPIError.apiError(errorDescription: error)
+                            }
+                        }
                         let response = $1 as? HTTPURLResponse
                         return OMDBHTTPDataResponse<T>(object, response)
                     }

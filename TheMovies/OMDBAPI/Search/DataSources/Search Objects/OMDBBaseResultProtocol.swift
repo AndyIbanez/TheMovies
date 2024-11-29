@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol OMDBAPIResultsProtocol {
+protocol OMDBBaseResultProtocol {
     var success: Bool { get }
     var error: String? { get }
 }

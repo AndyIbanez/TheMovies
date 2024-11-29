@@ -8,6 +8,12 @@
 import SwiftUI
 import Combine
 
+private let credentialsFile = Bundle.main.url(forResource: "OMDBConfigs", withExtension: "json")!
+private let credentials = try! OMDBCredentials(fromFile: credentialsFile)
+private let networkExecutor = NetworkExecutor(apiKey: credentials.apiKey, baseURL: credentials.baseURL)
+private let movieDataSource = OMDBMoviesDataSourceNetworking(networkExecutor: networkExecutor)
+private let movieProvider = MoviesProvider(dataSource: movieDataSource)
+
 @main
 struct TheMoviesApp: App {
     @State var heck = Heck()
