@@ -7,8 +7,16 @@
 import Foundation
 
 extension OMDBHTTPDataTask where ResponseType: Decodable {
-    func defaultJSONDecoding(data: Data) throws -> ResponseType {
+    func defaultJSONDecoding(data: Data) throws(OMDBAPIError) -> ResponseType {
         let jsonDecoder = JSONDecoder()
-        return try jsonDecoder.decode(ResponseType.self, from: data)
+        do {
+            return try jsonDecoder.decode(ResponseType.self, from: data)
+        } catch {
+            throw OMDBAPIError.invalidResponse
+        }
     }
+}
+
+extension OMDBHTTPDataTask {
+    
 }
