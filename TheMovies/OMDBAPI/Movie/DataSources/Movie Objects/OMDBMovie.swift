@@ -15,8 +15,6 @@ struct OMDBMovie: Decodable & Equatable & Hashable {
         case posterURL = "Poster"
         case ratings = "Ratings"
         case plot = "Plot"
-        case error = "Error"
-        case success = "Response"
     }
     
     let title: String
@@ -25,8 +23,6 @@ struct OMDBMovie: Decodable & Equatable & Hashable {
     let posterURL: String?
     let ratings: [OMDBRating]
     let plot: String?
-    var success: Bool
-    var error: String?
     
     init(
         title: String,
@@ -34,9 +30,7 @@ struct OMDBMovie: Decodable & Equatable & Hashable {
         imdbID: String,
         posterURL: String?,
         ratings: [OMDBRating],
-        plot: String?,
-        success: Bool = true,
-        error: String? = nil
+        plot: String?
     ) {
         self.title = title
         self.year = year
@@ -44,8 +38,6 @@ struct OMDBMovie: Decodable & Equatable & Hashable {
         self.posterURL = posterURL
         self.ratings = ratings
         self.plot = plot
-        self.success = success
-        self.error = error
     }
     
     init(from decoder: any Decoder) throws {
@@ -56,7 +48,5 @@ struct OMDBMovie: Decodable & Equatable & Hashable {
         self.posterURL = try container.decodeIfPresent(String.self, forKey: .posterURL)
         self.ratings = try container.decode([OMDBRating].self, forKey: .ratings)
         self.plot = try container.decodeIfPresent(String.self, forKey: .plot)
-        self.error = try? container.decode(String.self, forKey: .error)
-        self.success = try container.decode(String.self, forKey: .success).boolValue
     }
 }

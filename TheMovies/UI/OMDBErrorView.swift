@@ -51,7 +51,7 @@ struct OMDBErrorView: View {
         case .invalidData: return "Invalid Data"
         case .invalidURL: return "Invalid URL"
         case .unknownError: return "Unknown Error"
-        case .apiError: return "API Error"
+        case .apiError: return "Error"
         }
     }
 
