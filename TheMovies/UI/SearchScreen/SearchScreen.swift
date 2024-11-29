@@ -14,18 +14,21 @@ class SearchScreenViewModel {
     var loading: Bool = false
     var searchResults: [OMDBSearchResult] = []
     var availableResults: Int = 0
+    var searchQuery: String = ""
+    var currentPage: Int = 1
     
     private let debounceTime: RunLoop.SchedulerTimeType.Stride = .milliseconds(300)
     
-    private var cancellables: Set<AnyCancellable> = []
+    private var searchCancellable: AnyCancellable?
     
-    func search(for query: String, page: Int, withProvider provider: MoviesProvider) {
+    func search(withProvider provider: MoviesProvider) {
+        //searchCancellable?.cancel()
         loading = true
         apiError = nil
         
-        provider
+        searchCancellable = provider
             .dataSource
-            .search(for: query, page: page, type: .movie)
+            .search(for: searchQuery, page: currentPage, type: .movie)
             //.debounce(for: debounceTime, scheduler: RunLoop.main)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
@@ -41,7 +44,6 @@ class SearchScreenViewModel {
                 self.availableResults = results.totalResults
             }
         )
-        .store(in: &cancellables)
     }
 }
 
@@ -50,20 +52,20 @@ struct SearchScreen: View {
     
     @State private var viewModel = SearchScreenViewModel()
     @State private var navigationStack: [MovieNavigationStack] = []
-    @State private var searchText: String = ""
-    @State private var currentPage: Int = 1
     
     var body: some View {
         NavigationStack(path: $navigationStack) {
             Group {
                 if viewModel.loading {
                     ProgressView()
+                } else if errorIsNoMovieFound(error: viewModel.apiError) {
+                    ContentUnavailableView.search(text: viewModel.searchQuery)
                 } else if let error = viewModel.apiError {
                     OMDBErrorView(error: error)
-                } else if searchText.isEmpty {
+                } else if viewModel.searchQuery.isEmpty {
                     startSearchingView
-                } else if !viewModel.loading && !searchText.isEmpty && viewModel.searchResults.isEmpty {
-                    ContentUnavailableView.search(text: searchText)
+                } else if !viewModel.loading && !viewModel.searchQuery.isEmpty && viewModel.searchResults.isEmpty {
+                    ContentUnavailableView.search(text: viewModel.searchQuery)
                 } else {
                     List(viewModel.searchResults) { result in
                         Text(result.title)
@@ -71,12 +73,12 @@ struct SearchScreen: View {
                 }
             }
             .navigationTitle("Search")
-            .searchable(text: $searchText, prompt: "Movie title")
-            .onChange(of: searchText) { oldValue, newValue in
-                currentPage = 1
+            .searchable(text: $viewModel.searchQuery, prompt: "Movie title")
+            .onChange(of: viewModel.searchQuery) { oldValue, newValue in
+                viewModel.currentPage = 1
                 viewModel.searchResults.removeAll()
                 if newValue.count > 3 {
-                    viewModel.search(for: newValue, page: currentPage, withProvider: moviesProvider)
+                    viewModel.search(withProvider: moviesProvider)
                 }
             }
         }
@@ -102,6 +104,15 @@ struct SearchScreen: View {
                     .padding(.horizontal, 24)
             }
             .padding()
+        }
+    }
+    
+    func errorIsNoMovieFound(error: OMDBAPIError?) -> Bool {
+        guard let error else { return false }
+        switch error {
+        case .apiError(let errorDescription):
+            return errorDescription.localizedCaseInsensitiveContains("movie not found")
+        default: return false
         }
     }
 }
