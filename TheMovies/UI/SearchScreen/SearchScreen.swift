@@ -20,16 +20,16 @@ class SearchScreenViewModel {
     private let debounceTime: RunLoop.SchedulerTimeType.Stride = .milliseconds(300)
     
     private var searchCancellable: AnyCancellable?
+    private var debounceTimer: Timer?
     
-    func search(withProvider provider: MoviesProvider) {
-        //searchCancellable?.cancel()
+    private func performSearch(withProvider provider: MoviesProvider) {
+        searchCancellable?.cancel()
         loading = true
         apiError = nil
         
         searchCancellable = provider
             .dataSource
             .search(for: searchQuery, page: currentPage, type: .movie)
-            //.debounce(for: debounceTime, scheduler: RunLoop.main)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 self.loading = false
@@ -44,6 +44,15 @@ class SearchScreenViewModel {
                 self.availableResults = results.totalResults
             }
         )
+    }
+    
+    func search(withProvider provider: MoviesProvider) {
+        debounceTimer?.invalidate()
+
+        debounceTimer = Timer.scheduledTimer(withTimeInterval: debounceTime.timeInterval, repeats: false) { [weak self] _ in
+            guard let self = self else { return }
+            self.performSearch(withProvider: provider)
+        }
     }
 }
 
