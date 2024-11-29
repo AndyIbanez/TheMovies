@@ -16,7 +16,7 @@ struct OMDBCredentials: Decodable {
     
     init(fromFile: URL) throws {
         guard FileManager.default.fileExists(atPath: fromFile.path) else {
-            throw OMDBAPIErrors.missingCredentialsFile
+            throw OMDBAPIError.missingCredentialsFile
         }
         
         do {
@@ -25,7 +25,7 @@ struct OMDBCredentials: Decodable {
             let credentials = try jsonDecoder.decode(OMDBCredentials.self, from: data)
             self.apiKey = credentials.apiKey
         } catch {
-            throw OMDBAPIErrors.invalidCredentialsFile
+            throw OMDBAPIError.invalidCredentialsFile
         }
     }
 }
