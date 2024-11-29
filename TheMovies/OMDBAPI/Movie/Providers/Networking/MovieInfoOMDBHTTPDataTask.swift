@@ -14,10 +14,13 @@ struct MovieInfoOMDBHTTPDataTask: OMDBHTTPDataTask {
     
     func buildHTTPRequest(baseURL: URL) -> URLRequest {
         let query = [
-            "id": id
+            "i": id
         ]
         .map { URLQueryItem(name: $0, value: $1) }
-        fatalError()
+        let url = baseURL.appending(queryItems: query)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        return request
     }
     
     func parseResponse(data: Data) throws -> OMDBAPIMovieResult {
