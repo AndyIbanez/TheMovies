@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OMDBAPIMovieResult: Decodable {
+struct OMDBAPIMovie: Decodable {
     enum CodingKeys: String, CodingKey {
         case title = "Title"
         case year = "Year"

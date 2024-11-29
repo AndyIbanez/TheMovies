@@ -7,7 +7,7 @@
 
 import Combine
 
-class OMDBSearchDataSourceNetworking: OMDBSearchDataSource {
+class OMDBMoviesDataSourceNetworking: OMDBMoviesDataSource {
     let networkExecutor: NetworkExecutor
     
     init(networkExecutor: NetworkExecutor) {
@@ -17,10 +17,20 @@ class OMDBSearchDataSourceNetworking: OMDBSearchDataSource {
     func search(for query: String, page: Int, type: OMDBType) -> AnyPublisher<OMDBAPISearchResults, OMDBAPIError> {
         let task = SearchOMDBHTTPDataTask(searchQuery: query, page: page, type: type)
         
-        let q = networkExecutor
+        let publisher = networkExecutor
             .execute(task)
             .map(\.result)
             .eraseToAnyPublisher()
-        return q
+        return publisher
+    }
+    
+    func fetchMovie(with id: String) -> AnyPublisher<OMDBAPIMovie, OMDBAPIError> {
+        let task = MovieInfoOMDBHTTPDataTask(id: id)
+        
+        let publisher = networkExecutor
+            .execute(task)
+            .map(\.result)
+            .eraseToAnyPublisher()
+        return publisher
     }
 }

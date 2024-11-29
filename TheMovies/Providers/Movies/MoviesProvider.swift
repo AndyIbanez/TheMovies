@@ -6,11 +6,9 @@
 //
 
 class MoviesProvider {
-    let searchDataSource: any OMDBSearchDataSource
-    let movieDataSource: any OMDBMovieDataSource
+    let dataSource: any OMDBMoviesDataSource
     
-    init(searchDataSource: any OMDBSearchDataSource, movieDataSource: any OMDBMovieDataSource) {
-        self.searchDataSource = searchDataSource
-        self.movieDataSource = movieDataSource
+    init(dataSource: any OMDBMoviesDataSource) {
+        self.dataSource = dataSource
     }
 }
