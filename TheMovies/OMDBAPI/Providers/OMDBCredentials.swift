@@ -9,9 +9,11 @@ import Foundation
 
 struct OMDBCredentials: Decodable {
     let apiKey: String
+    let baseURL: URL
     
-    init(apiKey: String) {
+    init(apiKey: String, baseURL: URL) {
         self.apiKey = apiKey
+        self.baseURL = baseURL
     }
     
     init(fromFile: URL) throws {
@@ -23,7 +25,7 @@ struct OMDBCredentials: Decodable {
             let jsonDecoder = JSONDecoder()
             let data = try Data(contentsOf: fromFile)
             let credentials = try jsonDecoder.decode(OMDBCredentials.self, from: data)
-            self.apiKey = credentials.apiKey
+            self = credentials
         } catch {
             throw OMDBAPIError.invalidCredentialsFile
         }

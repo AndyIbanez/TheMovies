@@ -29,7 +29,8 @@ struct SearchOMDBHTTPDataTask: OMDBHTTPDataTask {
         .map { URLQueryItem(name: $0, value: $1) }
         
         let requestUrl = baseURL.appending(queryItems: query)
-        let request = URLRequest(url: requestUrl)
+        var request = URLRequest(url: requestUrl)
+        request.httpMethod = "GET"
         
         return request
     }

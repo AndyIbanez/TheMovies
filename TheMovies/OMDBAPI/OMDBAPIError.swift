@@ -12,4 +12,5 @@ enum OMDBAPIError: Error {
     case missingCredentialsFile
     case invalidResponse
     case invalidData
+    case invalidURL
 }
