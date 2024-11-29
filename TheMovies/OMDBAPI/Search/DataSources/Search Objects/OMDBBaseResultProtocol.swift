@@ -7,7 +7,9 @@
 
 import Foundation
 
-protocol OMDBBaseResultProtocol {
-    var success: Bool { get }
-    var error: String? { get }
+struct OMDBBaseResult: Decodable {
+    let success: Bool
+    let error: String?
 }
+
+

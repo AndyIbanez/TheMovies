@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol OMDBAPISearchResultsProtocol: OMDBBaseResultProtocol {
+protocol OMDBAPISearchResultsProtocol {
     var results: [OMDBSearchResult] { get }
     var totalResults: Int { get }
 }

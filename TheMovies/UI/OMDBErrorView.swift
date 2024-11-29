@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct OMDBErrorView: View {
     let error: OMDBAPIError
 
@@ -31,7 +29,6 @@ struct OMDBErrorView: View {
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 12).fill(Color(.systemGray6)))
-        //.shadow(radius: 4)
     }
 
     private var errorSymbol: String {
