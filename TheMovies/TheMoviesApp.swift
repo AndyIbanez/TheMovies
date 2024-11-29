@@ -8,11 +8,12 @@
 import SwiftUI
 import Combine
 
+// Initialize and pass providers and data sources to the main app.
 private let credentialsFile = Bundle.main.url(forResource: "OMDBConfigs", withExtension: "json")!
 private let credentials = try! OMDBCredentials(fromFile: credentialsFile)
 private let networkExecutor = NetworkExecutor(apiKey: credentials.apiKey, baseURL: credentials.baseURL)
 private let movieDataSource = OMDBMoviesDataSourceNetworking(networkExecutor: networkExecutor)
-private let movieProvider = MoviesProvider(dataSource: movieDataSource)
+private let moviesProvider = MoviesProvider(dataSource: movieDataSource)
 
 @main
 struct TheMoviesApp: App {
@@ -27,6 +28,7 @@ struct TheMoviesApp: App {
                     print("yyyy")
                 }
         }
+        .environment(\.moviesProvider, moviesProvider)
     }
 }
 

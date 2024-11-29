@@ -12,12 +12,12 @@ protocol OMDBMoviesDataSource {
     func fetchMovie(with id: String) -> AnyPublisher<OMDBAPIMovie, OMDBAPIError>
 }
 
-public class OMDBMoviesDataSourceEmpty: OMDBMoviesDataSource {
+public class OMDBMoviesDataSourceError: OMDBMoviesDataSource {
     func search(for query: String, page: Int, type: OMDBType) -> AnyPublisher<OMDBAPISearchResults, OMDBAPIError> {
-        Empty().eraseToAnyPublisher()
+        fatalError("Please use a different Data Source")
     }
     
     func fetchMovie(with id: String) -> AnyPublisher<OMDBAPIMovie, OMDBAPIError> {
-        fatalError()
+        fatalError("Please use a different Data Source")
     }
 }
