@@ -21,7 +21,7 @@ struct SearchOMDBHTTPDataTask: OMDBHTTPDataTask {
     }
     
     func buildHTTPRequest(baseURL: URL) -> URLRequest {
-        var query = [
+        let query = [
             "type": type.rawValue,
             "s": searchQuery,
             "page": String(page ?? 1)
