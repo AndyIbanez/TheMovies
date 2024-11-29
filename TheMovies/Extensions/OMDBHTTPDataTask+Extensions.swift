@@ -12,7 +12,6 @@ extension OMDBHTTPDataTask where ResponseType: Decodable {
         do {
             return try jsonDecoder.decode(ResponseType.self, from: data)
         } catch {
-            print("Error decoding JSON: \(error)")
             throw OMDBAPIError.invalidResponse
         }
     }

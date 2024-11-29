@@ -10,14 +10,14 @@ import Combine
 
 @main
 struct TheMoviesApp: App {
-    @State var fuck = Fuck()
+    @State var heck = Heck()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .onAppear {
                     print("wh")
-                    fuck.executeMe()
+                    heck.executeMe()
                     print("yyyy")
                 }
         }
@@ -25,7 +25,7 @@ struct TheMoviesApp: App {
 }
 
 @Observable
-class Fuck {
+class Heck {
     var cancellable: AnyCancellable?
     
     func executeMe() {
@@ -33,8 +33,9 @@ class Fuck {
         let credentials = try! OMDBCredentials(fromFile: credentialsFile)
         let networkExecutor = NetworkExecutor(apiKey: credentials.apiKey, baseURL: credentials.baseURL)
         let searchTask = SearchOMDBHTTPDataTask(searchQuery: "Spirited Away", page: 1)
+        let movieTask = MovieInfoOMDBHTTPDataTask(id: "tt27003039")
         
-        cancellable = networkExecutor.execute(searchTask).sink(receiveCompletion: { completion in
+        cancellable = networkExecutor.execute(movieTask).sink(receiveCompletion: { completion in
             switch completion {
             case .finished: break
             case .failure(let error):

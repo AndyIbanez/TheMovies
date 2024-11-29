@@ -14,6 +14,7 @@ struct OMDBAPIMovieResult: Decodable {
         case imdbID
         case posterURL = "Poster"
         case ratings = "Ratings"
+        case plot = "Plot"
     }
     
     let title: String
@@ -21,13 +22,15 @@ struct OMDBAPIMovieResult: Decodable {
     let imdbID: String
     let posterURL: String?
     let ratings: [OMDBRating]
+    let plot: String?
     
-    init(title: String, year: Int, imdbID: String, posterURL: String?, ratings: [OMDBRating]) {
+    init(title: String, year: Int, imdbID: String, posterURL: String?, ratings: [OMDBRating], plot: String?) {
         self.title = title
         self.year = year
         self.imdbID = imdbID
         self.posterURL = posterURL
         self.ratings = ratings
+        self.plot = plot
     }
     
     init(from decoder: any Decoder) throws {
@@ -37,5 +40,6 @@ struct OMDBAPIMovieResult: Decodable {
         self.imdbID = try container.decode(String.self, forKey: .imdbID)
         self.posterURL = try container.decodeIfPresent(String.self, forKey: .posterURL)
         self.ratings = try container.decode([OMDBRating].self, forKey: .ratings)
+        self.plot = try container.decodeIfPresent(String.self, forKey: .plot)
     }
 }
