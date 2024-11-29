@@ -5,7 +5,9 @@
 //  Created by Andy Ibanez on 11/28/24.
 //
 
-struct OMDBSearchResult: Decodable {
+import SwiftUI
+
+struct OMDBSearchResult: Decodable, Identifiable {
     enum CodingKeys: String, CodingKey {
         case id = "imdbID"
         case title = "Title"

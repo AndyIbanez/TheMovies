@@ -26,6 +26,7 @@ class SearchScreenViewModel {
             .search(for: query, page: page, type: .movie)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
+                self.loading = false
                 switch completion {
                 case .finished:
                     break
@@ -44,17 +45,24 @@ class SearchScreenViewModel {
 struct SearchScreen: View {
     @Environment(\.moviesProvider) private var moviesProvider
     
+    @State private var viewModel = SearchScreenViewModel()
     @State private var navigationStack: [MovieNavigationStack] = []
     @State private var searchText: String = ""
     @State private var currentPage: Int = 1
     
     var body: some View {
         NavigationStack(path: $navigationStack) {
-            List {
-                Text("Sup")
+            List(viewModel.searchResults) { result in
+                Text(result.title)
             }
             .navigationTitle("Search")
             .searchable(text: $searchText, prompt: "Movie title")
+            .onChange(of: searchText) { oldValue, newValue in
+                currentPage = 1
+                if newValue.count > 3 {
+                    viewModel.search(for: newValue, page: currentPage, withProvider: moviesProvider)
+                }
+            }
         }
     }
 }
