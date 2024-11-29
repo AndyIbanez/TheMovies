@@ -12,4 +12,8 @@ extension String {
         guard let url = URL(string: self) else { return nil }
         return url
     }
+    
+    var boolValue: Bool {
+        return self == "True"
+    }
 }

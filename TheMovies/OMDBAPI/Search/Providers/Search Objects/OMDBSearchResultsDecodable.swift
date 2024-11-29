@@ -31,7 +31,7 @@ struct OMDBAPISearchResultsDecodable : Decodable & OMDBAPISearchResultsProtocol 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.results = try container.decode([OMDBSearchResult].self, forKey: .results)
         self.totalResults = Int(try container.decode(String.self, forKey: .totalResults)) ?? 0
-        self.success = try container.decode(Bool.self, forKey: .success)
+        self.success = try container.decode(String.self, forKey: .success).boolValue
         self.error = try container.decodeIfPresent(String.self, forKey: .error)
     }
 }
