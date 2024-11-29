@@ -29,9 +29,10 @@ struct SearchScreen: View {
                     ContentUnavailableView.search(text: viewModel.searchQuery)
                 } else {
                     List(viewModel.searchResults) { result in
-                        OMDBSearchResultCell(result: result)
+                        SearchResultCell(result: result)
                             .onTapGesture {
                                 let movie = MovieNavigationStack.movie(id: result.id)
+                                navigationStack.append(movie)
                             }
                     }
                 }
@@ -47,7 +48,7 @@ struct SearchScreen: View {
             }
             .navigationDestination(for: MovieNavigationStack.self) { item in
                 switch item {
-                case .movie(let movie): OMDBMovieDetailView(movieId: movie)
+                case .movie(let movie): MovieDetailView(movieId: movie)
                 }
             }
         }

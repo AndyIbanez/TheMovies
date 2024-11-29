@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct MovieDetailViewMainBody {
-    var movie: OMDBMovie?
+struct MovieDetailViewMainBody: View {
+    var movie: OMDBMovie
     
     var body: some View {
         ScrollView {
            VStack(spacing: 16) {
                ZStack {
-                   if let posterURL = movie?.posterURL, let url = URL(string: posterURL) {
+                   if let posterURL = movie.posterURL, let url = URL(string: posterURL) {
                        AsyncImage(url: url) { phase in
                            switch phase {
                            case .empty:
@@ -38,7 +38,7 @@ struct MovieDetailViewMainBody {
                .clipped()
                .overlay(
                    VStack {
-                       if let posterURL = movie?.posterURL, let url = URL(string: posterURL) {
+                       if let posterURL = movie.posterURL, let url = URL(string: posterURL) {
                            AsyncImage(url: url) { phase in
                                switch phase {
                                case .empty:
@@ -72,12 +72,12 @@ struct MovieDetailViewMainBody {
 
                VStack(alignment: .leading, spacing: 16) {
                    VStack(alignment: .center, spacing: 8) {
-                       Text(movie?.title ?? "")
+                       Text(movie.title)
                            .font(.title)
                            .fontWeight(.bold)
                            .multilineTextAlignment(.center)
 
-                       if let year = movie?.year {
+                       if let year = movie.year {
                            Text("Year: \(year)")
                                .font(.subheadline)
                                .foregroundColor(.secondary)
@@ -86,7 +86,7 @@ struct MovieDetailViewMainBody {
                    .frame(maxWidth: .infinity)
 
 
-                   if let plot = movie?.plot {
+                   if let plot = movie.plot {
                        Text(plot)
                            .font(.body)
                            .foregroundColor(.primary)
@@ -94,24 +94,22 @@ struct MovieDetailViewMainBody {
                    }
 
 
-                   if let ratings = movie?.ratings {
-                       if !ratings.isEmpty {
-                           VStack(alignment: .leading, spacing: 8) {
-                               Text("Ratings")
-                                   .font(.headline)
-                               
-                               ForEach(ratings, id: \.self) { rating in
-                                   HStack {
-                                       Text(rating.source)
-                                           .font(.subheadline)
-                                           .fontWeight(.semibold)
-                                       Spacer()
-                                       Text(rating.value)
-                                           .font(.subheadline)
-                                           .foregroundColor(.secondary)
-                                   }
-                                   .padding(.vertical, 4)
+                   if !movie.ratings.isEmpty {
+                       VStack(alignment: .leading, spacing: 8) {
+                           Text("Ratings")
+                               .font(.headline)
+                           
+                           ForEach(movie.ratings, id: \.self) { rating in
+                               HStack {
+                                   Text(rating.source)
+                                       .font(.subheadline)
+                                       .fontWeight(.semibold)
+                                   Spacer()
+                                   Text(rating.value)
+                                       .font(.subheadline)
+                                       .foregroundColor(.secondary)
                                }
+                               .padding(.vertical, 4)
                            }
                        }
                    }

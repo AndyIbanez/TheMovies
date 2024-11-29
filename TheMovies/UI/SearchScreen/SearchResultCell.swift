@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OMDBSearchResultCell: View {
+struct SearchResultCell: View {
     let result: OMDBSearchResult
 
     var body: some View {

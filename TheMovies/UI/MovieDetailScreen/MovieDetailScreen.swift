@@ -6,13 +6,61 @@
 //
 
 import SwiftUI
+import Combine
 
-struct OMDBMovieDetailView: View {
+@Observable
+class MovieDetailViewViewModel {
+    var movie: OMDBMovie?
+    var error: OMDBAPIError?
+    var loading: Bool = false
+    
+    var movieCancellable: AnyCancellable?
+    
+    func fetchMovie(withId id: String, usingProvider provider: MoviesProvider) {
+        movieCancellable?.cancel()
+        
+        loading = true
+        
+        movieCancellable = provider
+            .dataSource
+            .fetchMovie(with: id)
+            .sink { result in
+                self.loading  = false
+                switch result {
+                case .finished: break
+                case .failure(let error):
+                    self.error = error
+                }
+            } receiveValue: { movie in
+                self.movie = movie
+            }
+    }
+}
+
+struct MovieDetailView: View {
+    @Environment(\.moviesProvider) private var moviesProvider
+    
     let movieId: String
     
-    @State private var movie: OMDBMovie?
+    let viewModel = MovieDetailViewViewModel()
 
     var body: some View {
-        Text("")
+        Group {
+            if viewModel.loading {
+                ProgressView()
+            } else if let error = viewModel.error {
+                VStack {
+                    OMDBErrorView(error: error)
+                    Button("Retry") {
+                        viewModel.fetchMovie(withId: movieId, usingProvider: moviesProvider)
+                    }
+                }
+            } else if let movie = viewModel.movie {
+                MovieDetailViewMainBody(movie: movie)
+            }
+        }
+        .onAppear {
+            viewModel.fetchMovie(withId: movieId, usingProvider: moviesProvider)
+        }
     }
 }
