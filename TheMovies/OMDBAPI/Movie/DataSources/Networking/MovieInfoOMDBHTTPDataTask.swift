@@ -8,7 +8,7 @@
 import Foundation
 
 struct MovieInfoOMDBHTTPDataTask: OMDBHTTPDataTask {
-    typealias ResponseType = OMDBAPIMovie
+    typealias ResponseType = OMDBMovie
     
     let id: String
     
@@ -23,7 +23,7 @@ struct MovieInfoOMDBHTTPDataTask: OMDBHTTPDataTask {
         return request
     }
     
-    func parseResponse(data: Data) throws -> OMDBAPIMovie {
+    func parseResponse(data: Data) throws -> OMDBMovie {
         return try defaultJSONDecoding(data: data)
     }
 }

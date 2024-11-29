@@ -7,10 +7,27 @@
 
 import SwiftUI
 
+@Observable
+class SearchScreenViewModel {
+    var apiError: OMDBAPIError?
+    var loading: Bool = false
+}
+
 struct SearchScreen: View {
+    @State private var navigationStack: [MovieNavigationStack] = []
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack(path: $navigationStack) {
+            List {
+                Text("Sup")
+            }
+            .navigationTitle("Search")
+        }
     }
+}
+
+enum MovieNavigationStack: Hashable {
+    case movie(OMDBMovie)
 }
 
 #Preview {

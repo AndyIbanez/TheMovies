@@ -24,7 +24,7 @@ class OMDBMoviesDataSourceNetworking: OMDBMoviesDataSource {
         return publisher
     }
     
-    func fetchMovie(with id: String) -> AnyPublisher<OMDBAPIMovie, OMDBAPIError> {
+    func fetchMovie(with id: String) -> AnyPublisher<OMDBMovie, OMDBAPIError> {
         let task = MovieInfoOMDBHTTPDataTask(id: id)
         
         let publisher = networkExecutor

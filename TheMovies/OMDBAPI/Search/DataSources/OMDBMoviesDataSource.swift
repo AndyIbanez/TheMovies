@@ -9,7 +9,7 @@ import Combine
 
 protocol OMDBMoviesDataSource {
     func search(for query: String, page: Int, type: OMDBType) -> AnyPublisher<OMDBAPISearchResults, OMDBAPIError>
-    func fetchMovie(with id: String) -> AnyPublisher<OMDBAPIMovie, OMDBAPIError>
+    func fetchMovie(with id: String) -> AnyPublisher<OMDBMovie, OMDBAPIError>
 }
 
 public class OMDBMoviesDataSourceError: OMDBMoviesDataSource {
@@ -17,7 +17,7 @@ public class OMDBMoviesDataSourceError: OMDBMoviesDataSource {
         fatalError("Please use a different Data Source")
     }
     
-    func fetchMovie(with id: String) -> AnyPublisher<OMDBAPIMovie, OMDBAPIError> {
+    func fetchMovie(with id: String) -> AnyPublisher<OMDBMovie, OMDBAPIError> {
         fatalError("Please use a different Data Source")
     }
 }
