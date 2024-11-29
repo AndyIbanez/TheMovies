@@ -13,5 +13,5 @@ enum OMDBAPIError: Error {
     case invalidResponse
     case invalidData
     case invalidURL
-    case unkwnownError
+    case unknownError
 }

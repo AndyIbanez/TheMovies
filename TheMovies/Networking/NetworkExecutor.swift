@@ -38,7 +38,7 @@ class NetworkExecutor {
                         } else if let omdbError = error as? OMDBAPIError {
                             return omdbError
                         } else {
-                            return OMDBAPIError.unkwnownError
+                            return OMDBAPIError.unknownError
                         }
                     }
                     .eraseToAnyPublisher()

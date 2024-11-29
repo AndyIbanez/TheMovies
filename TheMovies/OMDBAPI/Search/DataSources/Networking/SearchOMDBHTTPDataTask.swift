@@ -8,7 +8,7 @@
 import Foundation
 
 struct SearchOMDBHTTPDataTask: OMDBHTTPDataTask {
-    typealias ResponseType = OMDBAPISearchResultsDecodable
+    typealias ResponseType = OMDBAPISearchResults
     
     let searchQuery: String
     let page: Int?
@@ -35,7 +35,7 @@ struct SearchOMDBHTTPDataTask: OMDBHTTPDataTask {
         return request
     }
     
-    func parseResponse(data: Data) throws(OMDBAPIError) -> OMDBAPISearchResultsDecodable {
+    func parseResponse(data: Data) throws(OMDBAPIError) -> OMDBAPISearchResults {
         try defaultJSONDecoding(data: data)
     }
 }

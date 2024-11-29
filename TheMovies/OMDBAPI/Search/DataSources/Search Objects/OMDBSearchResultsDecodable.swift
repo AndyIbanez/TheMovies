@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OMDBAPISearchResultsDecodable : Decodable & OMDBAPISearchResultsProtocol {
+struct OMDBAPISearchResults : Decodable & OMDBAPISearchResultsProtocol {
     enum CodingKeys: String, CodingKey {
         case results = "Search"
         case totalResults
