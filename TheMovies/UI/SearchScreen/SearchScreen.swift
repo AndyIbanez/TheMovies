@@ -30,6 +30,9 @@ struct SearchScreen: View {
                 } else {
                     List(viewModel.searchResults) { result in
                         OMDBSearchResultCell(result: result)
+                            .onTapGesture {
+                                let movie = MovieNavigationStack.movie(id: result.id)
+                            }
                     }
                 }
             }
@@ -40,6 +43,11 @@ struct SearchScreen: View {
                 viewModel.searchResults.removeAll()
                 if newValue.count > 3 {
                     viewModel.search(withProvider: moviesProvider)
+                }
+            }
+            .navigationDestination(for: MovieNavigationStack.self) { item in
+                switch item {
+                case .movie(let movie): OMDBMovieDetailView(movieId: movie)
                 }
             }
         }
@@ -76,10 +84,6 @@ struct SearchScreen: View {
         default: return false
         }
     }
-}
-
-enum MovieNavigationStack: Hashable {
-    case movie(OMDBMovie)
 }
 
 #Preview {
