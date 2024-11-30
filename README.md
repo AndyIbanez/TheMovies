@@ -4,6 +4,7 @@
 * `Codable` can parse `URL`s directly out of strings, so some properties such as poster URLs could be parsed as URL. But I have learned from experience that oftentimes APIs might return malfored URL's that Foundation's `URL` object can't parse. For this reason, everything that is URL is treated as a string when parsing.
 * The idea to use `Provider`s and `DataSource`'s is to make it easy for SwiftUI to take dependencies that are hard to pass directly. Sometimes when you try to use generics in SwiftUI, you enter a hell of generics and it can mess a lot of stuff up.
 * In order to avoid leaking the API key, the repository does not include a file mentioned in the Requirements section. There's better ways to prvent API keys from leaking, but this was the fastest way for now.
+* CoreData was used via SwiftData instead. SwiftData uses CoreData behind the good, and it is the "Swiftiest" way to use CoreData in SwiftUI.
 
 
 # Requirements
