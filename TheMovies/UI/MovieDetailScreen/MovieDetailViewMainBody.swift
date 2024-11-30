@@ -15,21 +15,10 @@ struct MovieDetailViewMainBody: View {
            VStack(spacing: 16) {
                ZStack {
                    if let posterURL = movie.posterURL, let url = URL(string: posterURL) {
-                       AsyncImage(url: url) { phase in
-                           switch phase {
-                           case .empty:
-                               Color.gray
-                           case .success(let image):
-                               image
-                                   .resizable()
-                                   .aspectRatio(contentMode: .fill)
-                                   .blur(radius: 20)
-                           case .failure:
-                               Color.gray
-                           @unknown default:
-                               EmptyView()
-                           }
-                       }
+                       CachedImage(url: url)
+                           .scaledToFill()
+                           .blur(radius: 20)
+                           .background(Color.gray)
                    } else {
                        Color.gray
                    }
@@ -39,30 +28,15 @@ struct MovieDetailViewMainBody: View {
                .overlay(
                    VStack {
                        if let posterURL = movie.posterURL, let url = URL(string: posterURL) {
-                           AsyncImage(url: url) { phase in
-                               switch phase {
-                               case .empty:
-                                   ProgressView()
-                               case .success(let image):
-                                   image
-                                       .resizable()
-                                       .aspectRatio(contentMode: .fit)
-                                       .frame(width: 150)
-                                       .shadow(radius: 10)
-                               case .failure:
-                                   Image(systemName: "photo")
-                                       .resizable()
-                                       .frame(width: 150, height: 225)
-                                       .foregroundColor(.gray)
-                               @unknown default:
-                                   EmptyView()
-                               }
-                           }
-                       } else {
-                           Image(systemName: "photo")
-                               .resizable()
+                           CachedImage(url: url)
                                .frame(width: 150, height: 225)
-                               .foregroundColor(.gray)
+                               .shadow(radius: 10)
+                               .background {
+                                   basePhoto
+                                       .clipped()
+                               }
+                       } else {
+                           basePhoto
                        }
                    }
                    .offset(y: 100)
@@ -118,5 +92,13 @@ struct MovieDetailViewMainBody: View {
            }
        }
        .edgesIgnoringSafeArea(.top)
+    }
+    
+    @ViewBuilder
+    var basePhoto: some View {
+        Image(systemName: "photo")
+            .resizable()
+            .frame(width: 150, height: 225)
+            .foregroundColor(.gray)
     }
 }
