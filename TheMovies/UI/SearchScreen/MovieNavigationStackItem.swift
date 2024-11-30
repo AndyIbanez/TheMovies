@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 
-enum MovieNavigationStack: Hashable {
+enum MovieNavigationStackItem: Hashable {
     case movie(searchResult: OMDBSearchResult)
+    case favoriteMovies
 }

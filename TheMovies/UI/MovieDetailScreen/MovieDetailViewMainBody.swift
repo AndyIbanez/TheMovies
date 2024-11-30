@@ -20,7 +20,7 @@ struct MovieDetailViewMainBody: View {
            VStack(spacing: 16) {
                ZStack {
                    if let posterURL = movie.posterURL, let url = URL(string: posterURL) {
-                       CachedImage(url: url)
+                       CachedImageView(url: url)
                            .scaledToFill()
                            .blur(radius: 20)
                            .background(Color.gray)
@@ -33,7 +33,7 @@ struct MovieDetailViewMainBody: View {
                .overlay(
                    VStack {
                        if let posterURL = movie.posterURL, let url = URL(string: posterURL) {
-                           CachedImage(url: url)
+                           CachedImageView(url: url)
                                .frame(width: 150, height: 225)
                                .shadow(radius: 10)
                                .background {
@@ -119,7 +119,7 @@ struct MovieDetailViewMainBody: View {
     }
     
     private var isFavorited: Bool {
-        return searchResult == nil
+        return searchResult != nil
     }
     
     private var searchResult: OMDBSearchResult? {

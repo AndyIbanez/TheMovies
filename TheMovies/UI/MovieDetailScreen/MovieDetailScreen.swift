@@ -37,7 +37,7 @@ class MovieDetailViewViewModel {
     }
 }
 
-struct MovieDetailView: View {
+struct MovieDetailScreen: View {
     @Environment(\.moviesProvider) private var moviesProvider
     
     let searchResult: OMDBSearchResult
@@ -46,8 +46,11 @@ struct MovieDetailView: View {
 
     var body: some View {
         Group {
-            if viewModel.loading {
+            if viewModel.movie == nil && viewModel.error == nil {
                 ProgressView()
+                    .onAppear {
+                        viewModel.fetchMovie(withId: searchResult.id, usingProvider: moviesProvider)
+                    }
             } else if let error = viewModel.error {
                 VStack {
                     OMDBErrorView(error: error)
@@ -58,9 +61,6 @@ struct MovieDetailView: View {
             } else if let movie = viewModel.movie {
                 MovieDetailViewMainBody(movie: movie, originalSearchResult: searchResult)
             }
-        }
-        .onAppear {
-            viewModel.fetchMovie(withId: searchResult.id, usingProvider: moviesProvider)
         }
     }
 }

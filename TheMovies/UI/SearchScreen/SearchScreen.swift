@@ -12,7 +12,7 @@ struct SearchScreen: View {
     @Environment(\.moviesProvider) private var moviesProvider
     
     @State private var viewModel = SearchScreenViewModel()
-    @State private var navigationStack: [MovieNavigationStack] = []
+    @State private var navigationStack: [MovieNavigationStackItem] = []
     
     var body: some View {
         NavigationStack(path: $navigationStack) {
@@ -32,7 +32,7 @@ struct SearchScreen: View {
                         SearchResultCell(result: result)
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                let movie = MovieNavigationStack.movie(searchResult: result)
+                                let movie = MovieNavigationStackItem.movie(searchResult: result)
                                 navigationStack.append(movie)
                             }
                     }
@@ -47,9 +47,18 @@ struct SearchScreen: View {
                     viewModel.search(withProvider: moviesProvider)
                 }
             }
-            .navigationDestination(for: MovieNavigationStack.self) { item in
+            .navigationDestination(for: MovieNavigationStackItem.self) { item in
                 switch item {
-                case .movie(let movie): MovieDetailView(searchResult: movie)
+                case .movie(let movie): MovieDetailScreen(searchResult: movie)
+                case .favoriteMovies: FavoritesScreen()
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Favorites") {
+                        let faves = MovieNavigationStackItem.favoriteMovies
+                        navigationStack.append(faves)
+                    }
                 }
             }
         }

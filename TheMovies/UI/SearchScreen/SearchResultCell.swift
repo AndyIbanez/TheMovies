@@ -13,7 +13,7 @@ struct SearchResultCell: View {
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
 
-            CachedImage(url: URL(string: result.posterURL ?? ""))
+            CachedImageView(url: URL(string: result.posterURL ?? ""))
                 .frame(width: 80, height: 120)
                 .cornerRadius(8)
                 .background {

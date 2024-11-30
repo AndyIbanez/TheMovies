@@ -1,6 +1,14 @@
+//
+//  CachedImageView.swift
+//  TheMovies
+//
+//  Created by Andy Ibanez on 11/29/24.
+//
+
+
 import SwiftUI
 
-struct CachedImage: View {
+struct CachedImageView: View {
     let url: URL?
     let scale: CGFloat
     let transaction: Transaction
@@ -45,14 +53,12 @@ struct CachedImage: View {
 
         let request = URLRequest(url: url)
         
-        // Check cache for the image
         if let cachedResponse = cache.cachedResponse(for: request),
            let cachedImage = UIImage(data: cachedResponse.data, scale: scale) {
             self.image = cachedImage
             return
         }
 
-        // Image not in cache, download it
         isLoading = true
         session.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
@@ -60,7 +66,7 @@ struct CachedImage: View {
                 if let data = data,
                    let response = response,
                    let downloadedImage = UIImage(data: data, scale: scale) {
-                    // Cache the image
+
                     let cachedResponse = CachedURLResponse(response: response, data: data)
                     cache.storeCachedResponse(cachedResponse, for: request)
 
