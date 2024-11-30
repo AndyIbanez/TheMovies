@@ -20,17 +20,25 @@ struct SearchResultGridView: View {
     ]
 
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 16) {
-                ForEach(results) { result in
-                    SearchResultGridItem(result: result)
-                        .onTapGesture {
-                            let movie = MovieNavigationStackItem.movie(searchResult: result)
-                            navigationPath.append(movie)
-                        }
+        if results.isEmpty {
+            ContentUnavailableView(
+                "No Favorites",
+                systemImage: "star.slash",
+                description: Text("To add a favorite, search for a movie and tap \"Add to favorites\".")
+            )
+        } else {
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 16) {
+                    ForEach(results) { result in
+                        SearchResultGridItem(result: result)
+                            .onTapGesture {
+                                let movie = MovieNavigationStackItem.movie(searchResult: result)
+                                navigationPath.append(movie)
+                            }
+                    }
                 }
+                .padding()
             }
-            .padding()
         }
     }
 }
