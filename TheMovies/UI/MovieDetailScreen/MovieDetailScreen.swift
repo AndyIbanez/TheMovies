@@ -40,7 +40,7 @@ class MovieDetailViewViewModel {
 struct MovieDetailView: View {
     @Environment(\.moviesProvider) private var moviesProvider
     
-    let movieId: String
+    let searchResult: OMDBSearchResult
     
     let viewModel = MovieDetailViewViewModel()
 
@@ -52,15 +52,15 @@ struct MovieDetailView: View {
                 VStack {
                     OMDBErrorView(error: error)
                     Button("Retry") {
-                        viewModel.fetchMovie(withId: movieId, usingProvider: moviesProvider)
+                        viewModel.fetchMovie(withId:" searchResult.id", usingProvider: moviesProvider)
                     }
                 }
             } else if let movie = viewModel.movie {
-                MovieDetailViewMainBody(movie: movie)
+                MovieDetailViewMainBody(movie: movie, originalSearchResult: searchResult)
             }
         }
         .onAppear {
-            viewModel.fetchMovie(withId: movieId, usingProvider: moviesProvider)
+            viewModel.fetchMovie(withId: searchResult.id, usingProvider: moviesProvider)
         }
     }
 }

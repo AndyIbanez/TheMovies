@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
-struct OMDBSearchResult: Decodable, Identifiable {
+@Model
+class OMDBSearchResult: Decodable, Identifiable {
     enum CodingKeys: String, CodingKey {
         case id = "imdbID"
         case title = "Title"
@@ -15,7 +17,7 @@ struct OMDBSearchResult: Decodable, Identifiable {
         case posterURL = "Poster"
     }
     
-    var id: String
+    @Attribute(.unique) var id: String
     var title: String
     var year: Int?
     var posterURL: String?
@@ -27,7 +29,7 @@ struct OMDBSearchResult: Decodable, Identifiable {
         self.posterURL = posterURL
     }
     
-    init(from decoder: any Decoder) throws {
+    required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
         self.title = try container.decode(String.self, forKey: .title)

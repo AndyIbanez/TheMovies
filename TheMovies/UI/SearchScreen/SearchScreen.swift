@@ -30,8 +30,9 @@ struct SearchScreen: View {
                 } else {
                     List(viewModel.searchResults) { result in
                         SearchResultCell(result: result)
+                            .contentShape(Rectangle())
                             .onTapGesture {
-                                let movie = MovieNavigationStack.movie(id: result.id)
+                                let movie = MovieNavigationStack.movie(searchResult: result)
                                 navigationStack.append(movie)
                             }
                     }
@@ -48,7 +49,7 @@ struct SearchScreen: View {
             }
             .navigationDestination(for: MovieNavigationStack.self) { item in
                 switch item {
-                case .movie(let movie): MovieDetailView(movieId: movie)
+                case .movie(let movie): MovieDetailView(searchResult: movie)
                 }
             }
         }

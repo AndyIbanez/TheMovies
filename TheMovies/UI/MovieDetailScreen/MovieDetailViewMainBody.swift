@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MovieDetailViewMainBody: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var searchResults: [OMDBSearchResult]
+    
     var movie: OMDBMovie
+    var originalSearchResult: OMDBSearchResult
     
     var body: some View {
         ScrollView {
@@ -89,9 +94,36 @@ struct MovieDetailViewMainBody: View {
                    }
                }
                .padding(.horizontal)
+               
+               Button(action: {
+                   withAnimation {
+                       if let searchResult {
+                           modelContext.delete(searchResult)
+                       } else {
+                           modelContext.insert(originalSearchResult)
+                       }
+                   }
+               }) {
+                   if isFavorited {
+                       Label("Remove from favorites", systemImage: "star.slash")
+                           .foregroundColor(.red)
+                   } else {
+                       Label("Add to favorites", systemImage: "star")
+                           .foregroundStyle(.blue)
+                   }
+               }
+               .buttonStyle(.bordered)
            }
        }
        .edgesIgnoringSafeArea(.top)
+    }
+    
+    private var isFavorited: Bool {
+        return searchResult == nil
+    }
+    
+    private var searchResult: OMDBSearchResult? {
+        return searchResults.first { $0.id == movie.imdbID }
     }
     
     @ViewBuilder

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import SwiftData
 
 // Initialize and pass providers and data sources to the main app.
 private let credentialsFile = Bundle.main.url(forResource: "OMDBConfigs", withExtension: "json")!
@@ -22,5 +23,6 @@ struct TheMoviesApp: App {
             SearchScreen()
         }
         .environment(\.moviesProvider, moviesProvider)
+        .modelContainer(for: [OMDBSearchResult.self])
     }
 }

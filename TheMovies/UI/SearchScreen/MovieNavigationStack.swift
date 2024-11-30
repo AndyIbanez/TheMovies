@@ -10,5 +10,5 @@ import SwiftUI
 import Combine
 
 enum MovieNavigationStack: Hashable {
-    case movie(id: String)
+    case movie(searchResult: OMDBSearchResult)
 }
