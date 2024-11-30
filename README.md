@@ -22,3 +22,4 @@ Replacing `YOUR_API_KEY` with the API key you got from [OMDBAPI](https://omdbapi
 # Things that may make you raise your eyebrows
 
 * The app entry point (`TheMoviesApp.swift`) may raise some eyebrows due to the way I initialize the dependencies that are used by the entire app. It was the cleanest way I could come up with in the short amount of time I had :-), but at least the providers and data sources are injected and are testable.
+* `OMDBMoviesDataSourceError`. When injecting dependencies down the SwiftUI view hierarchy via the Environment, I don't like to use optionals for dependencies that are obviously not optional. So there is this default object in the environment that crashes the app whenever a developer calls it. This is good, because it forces developers to inject a different conformance that actually returns data.
