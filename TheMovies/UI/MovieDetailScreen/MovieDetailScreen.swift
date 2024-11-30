@@ -17,8 +17,6 @@ class MovieDetailViewViewModel {
     var movieCancellable: AnyCancellable?
     
     func fetchMovie(withId id: String, usingProvider provider: MoviesProvider) {
-        movieCancellable?.cancel()
-        
         loading = true
         
         movieCancellable = provider

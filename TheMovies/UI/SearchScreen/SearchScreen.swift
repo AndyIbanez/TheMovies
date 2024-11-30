@@ -49,8 +49,9 @@ struct SearchScreen: View {
             }
             .navigationDestination(for: MovieNavigationStackItem.self) { item in
                 switch item {
-                case .movie(let movie): MovieDetailScreen(searchResult: movie)
-                case .favoriteMovies: FavoritesScreen()
+                case .movie(let movie):
+                    MovieDetailScreen(searchResult: movie)
+                case .favoriteMovies: FavoritesScreen(navigationPath: $navigationStack)
                 }
             }
             .toolbar {

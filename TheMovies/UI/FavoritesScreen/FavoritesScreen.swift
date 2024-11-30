@@ -10,8 +10,9 @@ import SwiftData
 
 struct FavoritesScreen: View {
     @Query private var searchResults: [OMDBSearchResult]
+    @Binding var navigationPath: [MovieNavigationStackItem]
     
     var body: some View {
-        SearchResultGridView(results: searchResults)
+        SearchResultGridView(results: searchResults, navigationPath: $navigationPath)
     }
 }
