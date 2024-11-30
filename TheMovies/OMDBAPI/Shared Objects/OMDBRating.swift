@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OMDBRating: Decodable {
+struct OMDBRating: Decodable & Hashable & Equatable {
     enum CodingKeys: String, CodingKey {
         case source = "Source"
         case value = "Value"

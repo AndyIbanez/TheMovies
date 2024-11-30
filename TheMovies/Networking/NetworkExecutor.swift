@@ -28,7 +28,15 @@ class NetworkExecutor {
                 urlSession
                     .dataTaskPublisher(for: httpTask)
                     .tryMap {
+                        // First, we will try to check if we have a valid response at all.
+                        let baseResponse = try JSONDecoder().decode(OMDBBaseResult.self, from: $0)
+                        if !baseResponse.success, let error = baseResponse.error {
+                            throw OMDBAPIError.apiError(errorDescription: error)
+                        }
+                        
+                        // If no error was thrown previously, we will continue actually attempting to parse the data.
                         let object = try request.parseResponse(data: $0)
+
                         let response = $1 as? HTTPURLResponse
                         return OMDBHTTPDataResponse<T>(object, response)
                     }

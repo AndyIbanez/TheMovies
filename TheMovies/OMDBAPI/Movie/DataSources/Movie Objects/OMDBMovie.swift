@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OMDBAPIMovie: Decodable {
+struct OMDBMovie: Decodable & Equatable & Hashable {
     enum CodingKeys: String, CodingKey {
         case title = "Title"
         case year = "Year"
@@ -24,7 +24,14 @@ struct OMDBAPIMovie: Decodable {
     let ratings: [OMDBRating]
     let plot: String?
     
-    init(title: String, year: Int, imdbID: String, posterURL: String?, ratings: [OMDBRating], plot: String?) {
+    init(
+        title: String,
+        year: Int,
+        imdbID: String,
+        posterURL: String?,
+        ratings: [OMDBRating],
+        plot: String?
+    ) {
         self.title = title
         self.year = year
         self.imdbID = imdbID

@@ -5,7 +5,11 @@
 //  Created by Andy Ibanez on 11/28/24.
 //
 
-struct OMDBSearchResult: Decodable {
+import SwiftUI
+import SwiftData
+
+@Model
+class OMDBSearchResult: Decodable, Identifiable {
     enum CodingKeys: String, CodingKey {
         case id = "imdbID"
         case title = "Title"
@@ -13,7 +17,7 @@ struct OMDBSearchResult: Decodable {
         case posterURL = "Poster"
     }
     
-    var id: String
+    @Attribute(.unique) var id: String
     var title: String
     var year: Int?
     var posterURL: String?
@@ -25,7 +29,7 @@ struct OMDBSearchResult: Decodable {
         self.posterURL = posterURL
     }
     
-    init(from decoder: any Decoder) throws {
+    required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
         self.title = try container.decode(String.self, forKey: .title)
