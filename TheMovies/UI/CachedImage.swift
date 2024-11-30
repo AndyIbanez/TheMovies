@@ -30,7 +30,7 @@ struct CachedImage: View {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
-                    .animation(transaction.animation, value: image) // Animate when the image changes
+                    .animation(transaction.animation, value: image)
             } else if isLoading {
                 ProgressView()
             } else {
@@ -64,7 +64,6 @@ struct CachedImage: View {
                     let cachedResponse = CachedURLResponse(response: response, data: data)
                     cache.storeCachedResponse(cachedResponse, for: request)
 
-                    // Update the UI with a transaction animation
                     withTransaction(transaction) {
                         self.image = downloadedImage
                     }
